@@ -1,3 +1,5 @@
+const apiKey = "";
+
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("search-form");
     form.addEventListener("submit", function (e) {
@@ -7,15 +9,58 @@ document.addEventListener("DOMContentLoaded", function () {
         const cityName = cityInput.value;
         cityInput.value = '';
         fetchWeatherData(cityName);
+        fetchForecastData(cityName);
+        addToSearchHistory(cityName);
     });
 });
+async function fetchForecastData(cityName) {
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`;
+
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error('network response was not ok');
+        }
+        const data = await response.json();
+        console.log('Forecast API response:', data);
+        displayForecast(data);
+    } catch (error) {
+        console.error('Error fetching forecast data:', error);
+    }
+}
+
+function displayForecast(data) {
+    const forecastEntries = data.list;
+    const futureWeatherElement = document.getElementById('future-weather');
+    futureWeatherElement.innerHTML = '';
+
+    forecastEntries.forEach(entry => {
+        const timestamp = entry.dt * 1000;
+        const date = new Date(timestamp);
+        const temperature = entry.main.temp;
+        const humidity = entry.main.humidity;
+        const windSpeed = entry.wind.speed;
+        const weatherIcon = entry.weather[0].icon;
+
+        const forecastEntryElement = document.createElement('div');
+        forecastEntryElement.classList.add('forecast-entry');
+        forecastEntryElement.innerHTML = `
+        <h3>${date.toDateString()}</h3>
+        <p>Temperature: ${temperature} °C</p>
+        <p>Humidity: ${humidity}%</p>
+        <p>Wind Speed: ${windSpeed} m/s</p>
+        <img src="http://openweathermap.org/img/w/${weatherIcon}.png" alt="Weather Icon">
+        `;
+        futureWeatherElement.appendChild(forecastEntryElement);
+    });
+}
 
 async function fetchWeatherData(cityName) {
     if (!cityName || cityName.trim() === '') {
         console.error('Invalid city name');
         return;
     }
-    const apiKey = "";
+    
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
 
     try {
@@ -58,13 +103,13 @@ function displayCurrentWeather(data) {
 
 function displaySearchHistory() {
     const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
-    const searchHistoryElement = document.getElementById('history-list');
+    const searchHistoryList = document.getElementById('history-list');
 
-    searchHistoryElement.innerHTML = '';
+    searchHistoryList.innerHTML = '';
     searchHistory.forEach(city => {
         const listItem = document.createElement('li');
         listItem.textContent = city;
-        searchHistoryElement.appendChild(listItem);
+        searchHistoryList.appendChild(listItem);
     });
 }
 
@@ -74,8 +119,8 @@ function addToSearchHistory(cityName) {
     if (!searchHistory.includes(cityName)) {
         searchHistory.push(cityName);
         localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-        displaySearchHistory();
-    }
+      }
+    displaySearchHistory();
 }
 
 function clearSearchHistory() {
