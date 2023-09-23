@@ -54,3 +54,37 @@ function displayCurrentWeather(data) {
     <img src="http://openweathermap.org/img/w/${weatherIcon}.png" alt="Weather Icon">
     `;
 };
+
+
+function displaySearchHistory() {
+    const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    const searchHistoryElement = document.getElementById('history-list');
+
+    searchHistoryElement.innerHTML = '';
+    searchHistory.forEach(city => {
+        const listItem = document.createElement('li');
+        listItem.textContent = city;
+        searchHistoryElement.appendChild(listItem);
+    });
+}
+
+function addToSearchHistory(cityName) {
+    let searchHistory = JSON.parse(localStorage.getItem('seachHistory')) || [];
+
+    if (!searchHistory.includes(cityName)) {
+        searchHistory.push(cityName);
+        localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+        displaySearchHistory();
+    }
+}
+
+function clearSearchHistory() {
+    localStorage.removeItem('searchHistory');
+    displaySearchHistory();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+displaySearchHistory();
+
+document.getElementById('clear-history-button').addEventListener('click', clearSearchHistory);
+});

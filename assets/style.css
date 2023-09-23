@@ -3,3 +3,17 @@
     background-color: black;
     color: white;
 }
+
+.search-form {
+background-color: green;
+color: green;
+}
+
+#h1 {
+    font-size: 22px;
+    text-align: center;
+}
+
+.current-weather {
+    justify-content: center;
+}
