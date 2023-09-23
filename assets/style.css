@@ -1,19 +1,24 @@
-.root {
-    text-align: center;
+body {
     background-color: black;
     color: white;
 }
 
-.search-form {
-background-color: green;
-color: green;
-}
-
-#h1 {
-    font-size: 22px;
+#future-weather {
     text-align: center;
 }
 
-.current-weather {
-    justify-content: center;
+h1 {
+    text-align: center;
+}
+
+#search-form {
+    text-align: center;
+}
+
+#current-weather {
+    text-align: center;
+}
+
+#search-history {
+    justify-content: flex-start;
 }

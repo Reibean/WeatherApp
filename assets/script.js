@@ -46,7 +46,7 @@ function displayForecast(data) {
         forecastEntryElement.classList.add('forecast-entry');
         forecastEntryElement.innerHTML = `
         <h3>${date.toDateString()}</h3>
-        <p>Temperature: ${temperature} °C</p>
+        <p>Temperature: ${temperature} °F</p>
         <p>Humidity: ${humidity}%</p>
         <p>Wind Speed: ${windSpeed} m/s</p>
         <img src="http://openweathermap.org/img/w/${weatherIcon}.png" alt="Weather Icon">
@@ -93,7 +93,7 @@ function displayCurrentWeather(data) {
     currentWeatherElement.innerHTML = `
     <h2>${city}</h2>
     <p>Date: ${date.toDateString()}</p>
-    <p>Temperature: ${temperature} °C</p>
+    <p>Temperature: ${temperature} °F</p>
     <p>Humidity: ${humidity}%</p>
     <p>Wind Speed: ${windSpeed} m/s</p>
     <img src="http://openweathermap.org/img/w/${weatherIcon}.png" alt="Weather Icon">
