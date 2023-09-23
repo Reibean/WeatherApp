@@ -4,24 +4,37 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         
         const cityInput = document.getElementById("city-input");
-        const cityName = cityInput.ariaValueMax;
+        const cityName = cityInput.value;
         cityInput.value = '';
         fetchWeatherData(cityName);
     });
 });
-function fetchWeatherData(cityName) {
+
+async function fetchWeatherData(cityName) {
+    if (!cityName || cityName.trim() === '') {
+        console.error('Invalid city name');
+        return;
+    }
     const apiKey = "";
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
 
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
+    try {
+        const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error('network response was not ok');
+            }
+        const data = await response.json();
+        console.log('API repsonse:', data);
+
+        if (data.main && data.main.temp !== undefined) {
             displayCurrentWeather(data);
-        })
-        .catch(error => {
-            console.error('Error fetching weather data', error);
-        });
-}
+        } else {
+            throw new Error('Weather data not available');
+        } 
+    } catch (error) {
+            console.error('Error fetching weather data:', error);
+        }
+    }
 
 function displayCurrentWeather(data) {
     const city = data.name;
@@ -40,4 +53,4 @@ function displayCurrentWeather(data) {
     <p>Wind Speed: ${windSpeed} m/s</p>
     <img src="http://openweathermap.org/img/w/${weatherIcon}.png" alt="Weather Icon">
     `;
-}
+};
