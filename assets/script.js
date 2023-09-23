@@ -1,4 +1,5 @@
 const apiKey = "";
+const units = "imperial";
 
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("search-form");
@@ -13,9 +14,11 @@ document.addEventListener("DOMContentLoaded", function () {
         addToSearchHistory(cityName);
     });
 });
-async function fetchForecastData(cityName) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`;
 
+async function fetchForecastData(cityName) {
+    
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=${units}`;
+    
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
@@ -23,7 +26,7 @@ async function fetchForecastData(cityName) {
         }
         const data = await response.json();
         console.log('Forecast API response:', data);
-        displayForecast(data);
+             displayForecast(data)
     } catch (error) {
         console.error('Error fetching forecast data:', error);
     }
@@ -61,7 +64,7 @@ async function fetchWeatherData(cityName) {
         return;
     }
     
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=${units}`;
 
     try {
         const response = await fetch(apiUrl);
