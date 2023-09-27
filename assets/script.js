@@ -1,5 +1,4 @@
-require('dotenv').config();
-const apiKey = process.env.API_KEY;
+const apiKey = "19030fe54f63d2fa91ece8cc73fd57a8";
 const units = "imperial";
 
 document.addEventListener("DOMContentLoaded", function () {
